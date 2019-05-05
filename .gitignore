@@ -1,4 +1,5 @@
 *.pkl
+*.obj
 script.ipynb
 
 # Byte-compiled / optimized / DLL files
