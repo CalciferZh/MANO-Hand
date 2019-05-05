@@ -23,7 +23,4 @@ def dump_model(src_path, dst_path):
 
 
 if __name__ == '__main__':
-  # NOTE: the left hand may be right hand - it depends on enderer's coordinate
-  # system
-  dump_model('./official_model/model_left.pkl', './model_left.pkl')
-
+  dump_model('./official_model/model_right.pkl', './model.pkl')
