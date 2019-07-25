@@ -1,5 +1,7 @@
 *.pkl
 *.obj
+*.avi
+*.npy
 script.ipynb
 
 # Byte-compiled / optimized / DLL files

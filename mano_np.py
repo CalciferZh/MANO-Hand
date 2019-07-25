@@ -187,7 +187,6 @@ class MANOModel():
         fp.write('f %d %d %d\n' % (f[0], f[1], f[2]))
 
 
-
 if __name__ == '__main__':
   model = MANOModel('./model.pkl')
   # np.random.seed(9608)
