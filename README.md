@@ -1,8 +1,12 @@
 # MANO-Hand
 
-Numpy implementation of MANO model (hand only).
+Numpy an TensorFlow implementation of MPII MANO hand model.
 
 # Usage
 
 1. Download official model and use `dump_model.py` to pre-process it.
-2. Check `mano_np.py` about how to set the parameters and visualization.
+2. Run `mano_np.py` and you'll get the following mesh.
+
+![snapshot](./snapshot.png)
+
+[Here](https://youtu.be/x47qnL3GOfE) is a video of all the scans in the dataset.

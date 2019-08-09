@@ -200,7 +200,7 @@ class MANOModel():
 
 if __name__ == '__main__':
   model = MANOModel('./model.pkl')
-  # np.random.seed(9608)
-  # pose_pca = np.random.uniform(-1, 1, 12)
-  # model.set_params(pose_pca=pose_pca)
+  np.random.seed(9608)
+  pose_pca = np.random.uniform(-1, 1, 12)
+  model.set_params(pose_pca=pose_pca)
   model.export_obj('./hand.obj')
