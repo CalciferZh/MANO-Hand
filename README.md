@@ -1,6 +1,6 @@
 # MANO-Hand
 
-Numpy an TensorFlow implementation of MPII MANO hand model.
+Numpy an TensorFlow implementation of MPI MANO hand model.
 
 # Usage
 
