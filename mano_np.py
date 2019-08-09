@@ -41,9 +41,10 @@ class MANOModel():
     self.J = None
     self.R = None
 
-    self.update()
+    self.update(pose_deform=False)
 
-  def set_params(self, pose_abs=None, pose_pca=None, shape=None):
+  def set_params(self, pose_abs=None, pose_pca=None, shape=None,
+                 pose_deform=False):
     """
     Parameters
     ---------
@@ -54,6 +55,8 @@ class MANOModel():
     0 < N <= 45.
 
     shape: Coefficients for PCA-ed shape. Shape [N], 0 < N <= 10.
+
+    pose_deform: Consider deformation due to pose or not.
 
     Return
     ------
@@ -69,10 +72,9 @@ class MANOModel():
       self.pose = np.concatenate([np.zeros([1, 3]), self.pose], 0)
     if shape is not None:
       self.shape = shape
-    self.update()
-    return self.verts.copy()
+    return self.update(pose_deform)
 
-  def update(self):
+  def update(self, pose_deform):
     # how shape affect mesh
     v_shaped = self.mesh_template + self.mesh_shape_basis.dot(self.shape)
     # joints location
@@ -84,7 +86,11 @@ class MANOModel():
       np.expand_dims(np.eye(3), axis=0), (self.R.shape[0] - 1, 3, 3)
     )
     # how pose affect mesh
-    v_posed = v_shaped + self.mesh_pose_basis.dot((self.R[1:] - I_cube).ravel())
+    if pose_deform:
+      v_posed = v_shaped + \
+                self.mesh_pose_basis.dot((self.R[1:] - I_cube).ravel())
+    else:
+      v_posed = v_shaped
     # world transformation of each joint
     G = np.empty((self.n_joints, 4, 4))
     G[0] = self.with_zeros(np.hstack((self.R[0], self.J[0, :].reshape([3, 1]))))
@@ -101,11 +107,16 @@ class MANOModel():
         np.hstack([self.J, np.zeros([self.n_joints, 1])]) \
           .reshape([self.n_joints, 4, 1])
     ))
+
     # transformation of each vertex
     T = np.tensordot(self.skinning_weights, G, axes=[[1], [0]])
+
     rest_shape_h = np.hstack((v_posed, np.ones([v_posed.shape[0], 1])))
+
     self.verts = \
       np.matmul(T, rest_shape_h.reshape([-1, 4, 1])).reshape([-1, 4])[:, :3]
+
+    return self.verts.copy()
 
   def rodrigues(self, r):
     """
